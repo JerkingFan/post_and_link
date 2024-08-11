@@ -45,8 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Поле для загрузки файлов
-    const fileInputGroup = createFileInputGroup();
-    box.appendChild(fileInputGroup);
+
 
     const button = document.createElement('button');
     button.className = 'btn btn-outline-secondary';
@@ -77,25 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inputGroup.appendChild(input);
     return inputGroup;
-  }
-
-  function createFileInputGroup() {
-    const fileInputGroup = document.createElement('div');
-    fileInputGroup.className = 'mb-3';
-
-    const fileLabel = document.createElement('label');
-    fileLabel.className = 'form-label';
-    fileLabel.textContent = 'Attach files (documents or photos):';
-
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.className = 'form-control';
-    fileInput.multiple = true; // Разрешить выбор нескольких файлов
-
-    fileInputGroup.appendChild(fileLabel);
-    fileInputGroup.appendChild(fileInput);
-
-    return fileInputGroup;
   }
 
   function submitForm(isPrimary) {
