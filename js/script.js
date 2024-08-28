@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   primaryButton.addEventListener('click', () => {
     if (!primaryShown) {
-      showBox(true); // Отобразить прямоугольник с двумя полями ввода
+      showBox(true);
       primaryShown = true;
       secondaryShown = false;
     }
@@ -16,14 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   secondaryButton.addEventListener('click', () => {
     if (!secondaryShown) {
-      showBox(false); // Отобразить прямоугольник с одним полем ввода
+      showBox(false);
       secondaryShown = true;
       primaryShown = false;
     }
   });
 
   function showBox(isPrimary) {
-    container.innerHTML = ''; // Очистить контейнер перед добавлением нового содержимого
+    container.innerHTML = '';
 
     const box = document.createElement('div');
     box.className = 'box';
@@ -33,32 +33,27 @@ document.addEventListener('DOMContentLoaded', () => {
     box.appendChild(heading);
 
     if (isPrimary) {
-      // Два поля ввода
       const inputGroup1 = createInputGroup("Theme (Imagine there's no heaven)", 'theme');
       const inputGroup2 = createInputGroup('Key', 'key');
       box.appendChild(inputGroup1);
       box.appendChild(inputGroup2);
     } else {
-      // Одно поле ввода
       const inputGroup = createInputGroup('Code', 'code');
       box.appendChild(inputGroup);
     }
 
-    // Поле для загрузки файлов
-
-
     const button = document.createElement('button');
     button.className = 'btn btn-outline-secondary';
-    button.type = 'button';
     button.textContent = 'Submit';
     button.addEventListener('click', () => {
-      submitForm(isPrimary);
+      if (confirm('Are you sure you want to submit?')) {
+        submitForm(isPrimary);
+      }
     });
     box.appendChild(button);
 
     container.appendChild(box);
 
-    // Используем setTimeout, чтобы сработал transition
     setTimeout(() => {
       box.classList.add('show');
     }, 10);
@@ -80,32 +75,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function submitForm(isPrimary) {
     let url;
-    const formData = new FormData();
 
     if (isPrimary) {
       const theme = document.getElementById('theme').value;
       const key = document.getElementById('key').value;
-      formData.append('theme', theme);
-      formData.append('key', key);
       url = `writing.html?theme=${encodeURIComponent(theme)}&key=${encodeURIComponent(key)}`;
     } else {
-      const code = document.getElementById('code').value;
-      formData.append('code', code);
-      url = `writing.html?code=${encodeURIComponent(code)}`;
+      url = `empty.html`; // Переход на пустую страницу
     }
 
-    // Обработка файлов
-    const fileInput = container.querySelector('input[type="file"]');
-    if (fileInput && fileInput.files.length > 0) {
-      for (let i = 0; i < fileInput.files.length; i++) {
-        formData.append('files', fileInput.files[i]);
-      }
-    }
+    console.log(`Redirecting to: ${url}`);
 
-    // Логирование данных формы (для отладки)
-    console.log([...formData.entries()]);
-
-    // Переход на новую страницу
     window.location.href = url;
   }
 });
